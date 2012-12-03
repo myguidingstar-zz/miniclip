@@ -1,7 +1,7 @@
 Miniclip
 ========
 
-A Linux tray app that quickly converts HTML to Jade and CSS to Stylus from clipboard. A handy tool for Web developers.
+A Linux tray app that quickly converts HTML to Jade, CSS to Stylus and JS to Coffee from clipboard. A handy tool for Web developers.
 
 Why Miniclip?
 =============
