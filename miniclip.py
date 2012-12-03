@@ -35,6 +35,12 @@ class SystrayIconApp:
 		menu.append(stylus)
 		stylus.connect('activate', self.show_stylus_dialog)
 
+		# show coffee dialog
+		coffee = gtk.MenuItem("JS  -> Coffee")
+		coffee.show()
+		menu.append(coffee)
+		coffee.connect('activate', self.show_coffee_dialog)
+
 		# add quit item
 		quit = gtk.MenuItem("Quit")
 		quit.show()
@@ -61,6 +67,9 @@ class SystrayIconApp:
 
 	def  show_stylus_dialog(self, widget):
 		os.system('xsel -b | stylus -C | xsel -bi')
+
+	def  show_coffee_dialog(self, widget):
+		os.system('xsel -b | js2coffee | xsel -bi')
 
 if __name__ == "__main__":
 	SystrayIconApp()
