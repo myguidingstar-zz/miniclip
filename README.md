@@ -31,3 +31,9 @@ npm install -g stylus
 ```
 npm install -g js2coffee
 ```
+
+License
+=======
+The [MIT License](http://opensource.org/licenses/MIT) (MIT)
+
+Copyright (c) 2012 Hoang Minh Thang
