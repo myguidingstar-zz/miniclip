@@ -1,12 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os, gtk
+import os, gtk, pynotify
+
+def notify(title, content):
+  pynotify.Notification(title, content).show()
 
 class SystrayIconApp:
 	def __init__(self):
 		self.tray = gtk.StatusIcon()
-		self.tray.set_from_stock(gtk.STOCK_ABOUT)
+		self.tray.set_from_stock(gtk.STOCK_COPY)
 		self.tray.connect('popup-menu', self.on_right_click)
 		self.tray.set_tooltip(('Miniclip tray app'))
 
@@ -72,8 +75,10 @@ class SystrayIconApp:
 		os.system('xsel -b | js2coffee | xsel -bi')
 
 if __name__ == "__main__":
-	SystrayIconApp()
-	gtk.main()
+  if not pynotify.init("Basics"):
+    sys.exit(1)
+  SystrayIconApp()
+  gtk.main()
 
 
 
