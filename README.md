@@ -38,7 +38,16 @@ Ubuntu users with Unity desktop may have the problem of "missing system tray ico
 
 Usage
 =====
+The GUI (miniclip.py)
+---------------------
+
 Try scrolling around Twitter [bootstrap](http://twitter.github.com/bootstrap/scaffolding.html), copy the code snippets there and see the results.
+
+The CLI (cli.py)
+----------------
+The CLI version is intended to be used with system's global shortcuts. 
+You can assign GNOME, KDE etc shortcuts to some commands. 
+Please run with `-h` option to see more usage.
 
 License
 =======
