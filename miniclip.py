@@ -59,20 +59,15 @@ class SystrayIconApp:
     self.tray = gtk.StatusIcon()
     self.tray.set_from_stock(gtk.STOCK_COPY)
     self.tray.connect('popup-menu', self.on_right_click)
+    self.tray.connect('activate', self.on_left_click)
     self.tray.set_tooltip(('Miniclip tray app'))
 
 
   def on_right_click(self, icon, event_button, event_time):
     self.make_menu(event_button, event_time)
 
-  def make_menu(self, event_button, event_time):
+  def on_left_click(self, widget):
     menu = gtk.Menu()
-
-    # show about dialog
-    about = gtk.MenuItem("About")
-    about.show()
-    menu.append(about)
-    about.connect('activate', self.show_about_dialog)
 
     # show jade dialog
     jade = gtk.MenuItem("HTML -> Jade")
@@ -91,6 +86,18 @@ class SystrayIconApp:
     coffee.show()
     menu.append(coffee)
     coffee.connect('activate', self.show_coffee_dialog)
+
+    menu.popup(None, None, gtk.status_icon_position_menu,
+               0, 0, self.tray)
+
+  def make_menu(self, event_button, event_time):
+    menu = gtk.Menu()
+
+    # show about dialog
+    about = gtk.MenuItem("About")
+    about.show()
+    menu.append(about)
+    about.connect('activate', self.show_about_dialog)
 
     # add quit item
     quit = gtk.MenuItem("Quit")
