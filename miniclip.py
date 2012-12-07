@@ -37,8 +37,8 @@ convertCommands["stylus"] = ['stylus', '-C']
 
 display=gtk.gdk.display_get_default()
 
-def getClipboard():
-  return gtk.Clipboard(display, "CLIPBOARD").wait_for_text()
+def getSelection(clipboard_type):
+  return gtk.Clipboard(display, clipboard_type).wait_for_text()
 
 def setClipboard(text):
   clipboard = gtk.Clipboard(display, "CLIPBOARD")
@@ -51,8 +51,8 @@ def notify(title, content=""):
 def notEmptyString(text):
   return isinstance(text, str) or isinstance(text, unicode) and text != ""
 
-def run_action(name):
-  text = getClipboard()
+def run_action(clipboard_type, name):
+  text = getSelection(clipboard_type)
   if notEmptyString(text):
     out, err, rc = pipeData(convertCommands[name], text)
     if rc == 0:
@@ -70,6 +70,9 @@ def run_action(name):
 
   else:
     notify("No text found on clipboard...")
+
+# default value:
+clipboard_type = "CLIPBOARD"
 
 class SystrayIconApp:
   def __init__(self):
@@ -140,13 +143,13 @@ class SystrayIconApp:
     about_dialog.destroy()
 
   def show_jade_dialog(self, widget):
-    run_action("jade")
+    run_action(clipboard_type, "jade")
 
   def show_stylus_dialog(self, widget):
-    run_action("stylus")
+    run_action(clipboard_type, "stylus")
 
   def show_coffee_dialog(self, widget):
-    run_action("coffee")
+    run_action(clipboard_type, "coffee")
 
 if __name__ == "__main__":
   if not pynotify.init("Basics"):
