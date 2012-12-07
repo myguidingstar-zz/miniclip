@@ -1,18 +1,58 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os, gtk, pynotify
+import pygtk, gtk, pynotify
+pygtk.require('2.0')
 
-main_commands = {}
-main_commands["jade"]   = lambda: os.system('xsel -b | html2jade | xsel -bi')
-main_commands["stylus"] = lambda: os.system('xsel -b | stylus -C | xsel -bi')
-main_commands["coffee"] = lambda: os.system('xsel -b | js2coffee | xsel -bi')
+from subprocess import Popen, PIPE
+def pipeData(command, data):
+  sub       = Popen(command, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+  out, err  = sub.communicate(data)
+  rc = sub.returncode
+  return [out, err, rc]
+
+convertCommands = {}
+convertCommands["jade"]   = ['html2jade']
+convertCommands["coffee"] = ['js2coffee']
+convertCommands["stylus"] = ['stylus', '-C']
+
+# Eg: out, err, rc = pipeData(convertCommands["stylus"], css_code)
+
+display=gtk.gdk.display_get_default()
+
+def getClipboard():
+  return gtk.Clipboard(display, "CLIPBOARD").wait_for_text()
+
+def setClipboard(text):
+  clipboard = gtk.Clipboard(display, "CLIPBOARD")
+  clipboard.set_text(text)
+  clipboard.store()
+
+def notify(title, content=""):
+  pynotify.Notification(title, content).show()
+
+def notEmptyString(text):
+  return isinstance(text, str) or isinstance(text, unicode) and text != ""
 
 def run_action(name):
-  main_commands[name]()
+  text = getClipboard()
+  if notEmptyString(text):
+    out, err, rc = pipeData(convertCommands[name], text)
+    if rc == 0:
+      if text == out:
+        notify("Nothing happened!")
+      else:
+        if notEmptyString(out):
+          setClipboard(out)
+          notify("Converted successfully!", out[:200])
+        else:
+          notify("Got an empty output...", "Please check your input!")
+    else:
+      notify("Error converting:", "Program exited with code: " + str(rc))
+      notify("Error output: ", err[:120])
 
-def notify(title, content):
-  pynotify.Notification(title, content).show()
+  else:
+    notify("No text found on clipboard...")
 
 class SystrayIconApp:
   def __init__(self):
@@ -64,11 +104,13 @@ class SystrayIconApp:
   def show_about_dialog(self, widget):
     about_dialog = gtk.AboutDialog()
     about_dialog.set_destroy_with_parent (True)
-    about_dialog.set_icon_name ("Miniclip")
-    about_dialog.set_name('SystrayIcon')
-    about_dialog.set_version('0.1')
+    about_dialog.set_icon_name ("edit-paste")
+    about_dialog.set_name('Miniclip')
+    about_dialog.set_version('0.2')
     about_dialog.set_copyright("(C) 2012 Hoang Minh Thang")
-    about_dialog.set_comments(("A Linux tray app that quickly converts HTML to Jade and CSS to Stylus from clipboard"))
+    about_dialog.set_comments(("""
+    A Linux tray app that quickly converts HTML to Jade, JS to Coffee and CSS to Stylus from clipboard
+    """))
     about_dialog.set_authors(['Hoang Minh Thang <p@banphim.net>'])
     about_dialog.run()
     about_dialog.destroy()
@@ -87,6 +129,3 @@ if __name__ == "__main__":
     sys.exit(1)
   SystrayIconApp()
   gtk.main()
-
-
-
