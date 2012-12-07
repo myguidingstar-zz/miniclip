@@ -34,6 +34,6 @@ npm install -g js2coffee
 
 License
 =======
-The [MIT License](http://opensource.org/licenses/MIT) (MIT)
+The [GPL License v3](http://www.gnu.org/licenses/gpl.html)
 
 Copyright (c) 2012 Hoang Minh Thang
