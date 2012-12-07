@@ -32,6 +32,10 @@ npm install -g stylus
 npm install -g js2coffee
 ```
 
+Note on Ubuntu users:
+--------------------
+Ubuntu users with Unity desktop may have the problem of "missing system tray icons". In this case, please check the quick solution [here](https://github.com/myguidingstar/miniclip/issues/1)
+
 License
 =======
 The [GPL License v3](http://www.gnu.org/licenses/gpl.html)
