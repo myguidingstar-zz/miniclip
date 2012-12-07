@@ -36,6 +36,10 @@ Note on Ubuntu users:
 --------------------
 Ubuntu users with Unity desktop may have the problem of "missing system tray icons". In this case, please check the quick solution [here](https://github.com/myguidingstar/miniclip/issues/1)
 
+Usage
+=====
+Try scrolling around Twitter [bootstrap](http://twitter.github.com/bootstrap/scaffolding.html), copy the code snippets there and see the results.
+
 License
 =======
 The [GPL License v3](http://www.gnu.org/licenses/gpl.html)
